@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Task Analysis</h1>
+
+    <!-- Bar graph -->
+    <div id="hours_chart"></div>
+    <script>
+        var data = [
+            {
+                x: {{ statuses | tojson }},
+                y: {{ logged_hours | tojson }},
+                name: 'Logged Hours',
+                type: 'bar'
+            },
+            {
+                x: {{ statuses | tojson }},
+                y: {{ assigned_hours | tojson }},
+                name: 'Total Assigned Hours',
+                type: 'bar'
+            }
+        ];
+        var layout = {
+            title: 'Logged Hours vs Total Hours by Task Status',
+            barmode: 'group'
+        };
+        Plotly.newPlot('hours_chart', data, layout);
+    </script>
+
+    <!-- Pie Chart-->
+    <div id="task_count_chart"></div>
+    <script>
+        var data = [
+            {
+                labels: {{ statuses | tojson }},
+                values: {{ task_counts | tojson }},
+                type: 'pie'
+            }
+        ];
+        var layout = {
+            title: 'Task Distribution by Status'
+        };
+        Plotly.newPlot('task_count_chart', data, layout);
+    </script>
+{% endblock %}
+
+
+

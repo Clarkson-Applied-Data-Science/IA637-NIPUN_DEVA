@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %} 
+<div class="login-container">
+    <h1>Register</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+            <div class="messages">
+                {% for category, message in messages %}
+                    <p class="{{ category }}">{{ message|safe }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    
+    <form method="POST" action="{{ url_for('register') }}">
+
+    {% if user_data[0].get('user_id') %}
+    <input type="hidden" name="user_id" value="{{ user_data[0]['user_id'] }}">
+    {% endif %}
+
+    {% if user_data[0].get('Active') %}
+        <input type="hidden" name='Active' value="{{user_data[0].get('Active', '') }}" />
+    {% endif %}
+
+
+        <div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required value="{{user_data[0].get('name','')}}">
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div>
+            <label for="password2">Confirm Password:</label>
+            <input type="password" id="password2" name="password2" required>
+        </div>
+        <div>
+            <label for="role">Role:</label>
+            <select id="role" name="role" required>
+                <option value="" selected disabled>Select Role</option>
+                <option value="admin" {% if user_data[0].get('role') == 'admin' %}selected{% endif %}>Admin</option>
+                <option value="manager" {% if user_data[0].get('role') == 'manager' %}selected{% endif %}>Manager</option>
+                <option value="employee" {% if user_data[0].get('role') == 'employee' %}selected{% endif %}>Employee</option>
+            </select>
+        </div>   
+        <div>
+            <label for="doj">Date of Joining:</label>
+            <input type="date" id="doj" name="doj" required value="{{ user_data[0].get('doj', '') }}">
+        </div>
+        <div>
+            <button type="submit">Register</button>
+        </div>
+    </form>    
+
+{% endblock %}

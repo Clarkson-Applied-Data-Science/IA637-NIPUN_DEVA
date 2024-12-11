@@ -1,0 +1,34 @@
+{% extends 'base.html' %} {% block content %}
+<h3>Hi!</h3>
+
+<table style="width: 100%; border-collapse: collapse">
+  <thead>
+    <tr>
+      {% for header in headers %}
+      <th style="padding: 8px; text-align: left; background-color: #f2f2f2">
+        {{ header }}
+      </th>
+      {% endfor %}
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for task in task_details %}
+
+    <tr>
+      <td style="padding: 8px">{{task['task_id']}}</td>
+
+      <td style="padding: 8px">
+        <a
+          href="/task/view?user_id={{user_id}}&task_id={{task['task_id']}}"
+          style="color: blue; text-decoration: underline; max-width: 50vw"
+        >
+          {{task['task_name']}}
+        </a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block content %} 
+
+<style>
+    table {
+        border-collapse: collapse;
+        width: 80%;
+        margin: auto;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+    tr:hover {
+        background-color: #f5f5f5;
+    }
+    td .button-container {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+    }
+    td .button-container form {
+        margin: 0;
+    }
+</style>
+
+<h1>Task List</h1>
+
+<form action="/create_task" method="GET">
+    <button type="submit">Create Task</button>
+</form>
+
+<form action="/task/analysis" method="GET">
+    <button type="submit">View Task Stats</button>
+</form>
+
+{% if tasksList|length==0 %}
+<h2>NO DATA</h2>
+{% else %}
+<table>
+    <thead>
+        <tr>
+            {% for field in fieldsList %}
+            <th>{{ field }}</th>
+            {% endfor %}
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>        
+        {% for row in tasksList %}
+        <tr>
+            {% for field in fieldsList %}
+            <td>{{ row[field] }}</td>
+            {% endfor %}
+            <td>
+                <!-- Container for buttons -->
+                <div class="button-container">
+                    <!-- Edit -->
+                    <form action="/create_task" method="GET">
+                        <input type="hidden" name="method" value="PUT">
+                        <input type="hidden" name="task_id" value="{{ row['task_id'] }}">
+                        <button type="submit">Edit</button>
+                    </form>
+
+                    <!-- Delete -->
+                    <form action="/manager_view/delete" method="POST">
+                        <input type="hidden" name="method" value="DELETE">
+                        <input type="hidden" name="task_id" value="{{ row['task_id'] }}">
+                        <button type="submit" onclick="return confirm('Are you sure you want to delete this task?');">Delete</button>
+                    </form>
+
+                    <!-- View Progress -->
+                    <form action="/task/view/helper" method="GET">
+                        <input type="hidden" name="method" value="Progress">
+                        <input type="hidden" name="user_id" value="{{ user_id }}">
+                        <input type="hidden" name="task_id" value="{{ row['task_id'] }}">
+                        <button type="submit" style="display: inline;">View Progress</button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+{% endblock %}

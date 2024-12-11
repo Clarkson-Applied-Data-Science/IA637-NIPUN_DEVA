@@ -1,0 +1,125 @@
+{% extends 'base.html' %} {% block content %}
+<style>
+    table {
+        border-collapse: collapse;
+        width: 80%;
+        margin: auto;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+    tr:hover {
+        background-color: #f5f5f5;
+    }
+    td .button-container {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+    }
+    td .button-container form {
+        margin: 0;
+    }
+</style>
+
+
+<h3 style="margin-left:600px;"><strong>{{task_details[0]['task_name']}}</strong></h3>
+<form id="taskForm">
+
+        {% if task_details[0].get('task_id') %}
+        <input type="hidden" name="task_id" value="{{ task_details[0]['task_id'] }}">
+        {% endif %}
+    
+      <label for="task_name">Task Name:</label>
+      <input type="text" id="task_name" name="task_name" rows="2" disabled value="{{ task_details[0].get('task_name', '') }}"/>
+    
+      <label for="description">Description:</label>
+      <textarea id="description" name="description" rows="4" disabled >{{ task_details[0].get('description', '') }}</textarea>
+    
+      <label for="priority">Priority:</label>
+      <input type="text" id="priority" name="priority" value="{{ task_details[0].get('priority', '')}}" disabled />
+
+      <label for="priority">Status:</label>
+      <input type="text" id="status" name="priority" value="{{ task_details[0].get('status', '')}}" disabled />
+
+    
+
+      <label for="created_on">Created On:</label>
+      <input type="date" id="created_on" name="created_on" value="{{ task_details[0].get('created_on', '').strftime('%Y-%m-%d') if task_details[0] else '' }}" disabled />
+    
+      <label for="due_date">Due Date:</label>
+      <input type="date" id="due_date" name="due_date"  value="{{ task_details[0].get('due_date', '').strftime('%Y-%m-%d')  if task_details[0] else '' }}" disabled/>
+    <!--hours-->
+      <label for="due_date">Total Estimated Hours:</label>
+      <input type="number" name="total_hours" value="{{ task_details[0].get('total_hours', 0) }}" disabled>
+
+      <label for="due_date">Logged Hours:</label>
+      <input type="number" name="logged_hours" value="{{ task_details[0].get('logged_hours', 0) }}" disabled>
+    </form>
+
+<!--comments section-->
+<h4 style="margin-left:600px;">Comments</h4>
+<form action="/comment/add" method="post">
+    <input type="hidden" value="{{user_id}}" name="user_id">
+    <input type="hidden" value="{{task_details[0].get('task_id')}}" name="task_id">
+<button type="submit">Add Comment</button>
+</form>
+
+{% if comments_details|length==0 %}
+<h2>NO DATA</h2>
+{% else %}
+<table>
+  <thead>
+        <tr>
+            {% for header in headers %}
+                <th style="padding: 8px; text-align: left; background-color: #f2f2f2;">{{ header }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+
+  <tbody>
+    {% for com in comments_details %}
+    <tr>
+        <td>
+          {{com.get('name','')}}
+        </td>
+        <td>
+          {{com.get('updated_on','').strftime('%Y-%m-%d')}}
+        </td>
+        <td>
+          {{com.get('content','')}}
+        </td>
+
+<!--        <td>-->
+<!--        &lt;!&ndash; Edit &ndash;&gt;-->
+<!--        <form action="/comment" method="POST" style="display: inline">-->
+<!--          <input type="hidden" name="method" value="PUT" />-->
+<!--          <input type="hidden" name="comment_id" value="{{com['comment_id']}}" />-->
+<!--          <button type="submit">Edit</button>-->
+<!--        </form>-->
+<!--        </td>-->
+
+<!--        &lt;!&ndash; Delete &ndash;&gt;-->
+<!--        <form action="/task/comment/delete" method="POST" style="display: inline">-->
+<!--           <input type="hidden" name="method" value="DELETE">-->
+<!--          <input type="hidden" name="comment_id" value="{{com['comment_id']}}" />-->
+<!--          <button-->
+<!--            type="submit"-->
+<!--            onclick="return confirm('Are you sure you want to delete this comment record?');"-->
+<!--          >-->
+<!--            Delete-->
+<!--          </button>-->
+<!--        </form>-->
+<!--      </td>-->
+
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+{% endblock %}

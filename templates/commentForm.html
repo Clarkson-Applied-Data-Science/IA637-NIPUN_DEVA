@@ -1,0 +1,13 @@
+{% extends 'base.html' %} {% block content %}
+
+<h3>Progress</h3>
+<form action="/comment" method="POST" id="taskForm">
+  <label for="content">Content:</label>
+  <input type="hidden" value="{{user_id}}" name="user_id">
+  <input type="hidden" value="{{task_id}}" name="task_id">
+  <textarea id="content" name="content" rows="4" cols="50" required ></textarea><br><br>
+  <label for="log_hrs"> Log Hours</label>
+  <input type="number" id="log_hrs" name="log_hrs"/>
+  <button type="submit">Submit</button>
+</form>
+{% endblock %}
