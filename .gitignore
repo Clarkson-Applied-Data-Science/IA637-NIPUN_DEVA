@@ -1,2 +1,5 @@
 
 config.yml
+/__pycache__
+flask_app.log
+flask_app.log

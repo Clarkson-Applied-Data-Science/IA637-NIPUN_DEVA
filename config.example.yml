@@ -1,0 +1,13 @@
+db:
+  host: 'host'
+  user: 'user'
+  passwd: 'password'
+  db: 'db'
+  port: 3306
+tables:
+  user: 'Users'
+  task: 'Task'
+  story: 'Story'
+  userTask : 'User_tasks'
+  comments : 'Comments'
+

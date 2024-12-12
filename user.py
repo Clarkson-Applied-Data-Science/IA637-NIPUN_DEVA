@@ -29,11 +29,11 @@ class user(baseObject):
 
         if self.data[n]['password'] != self.data[n]['password2']:
             self.errors.append('Retyped password must match.')
-            raise ValueError("Retyped password must match.")
+ 
 
         if len(self.data[n]['password']) < 3:
             self.errors.append('Password needs to be more than 3 chars.')
-            raise ValueError("Password needs to be more than 3 chars.")
+           
         else:
             self.data[n]['password'] = self.hashPassword(self.data[n]['password'])
 
@@ -117,9 +117,7 @@ class user(baseObject):
 
         if len(self.data) == 1:
             return True, self.data[0]['role'], self.data[0]['user_id']
-        # else:
-        #     self.errors.append('Invalid date format. Please enter in YYYY-MM-DD format.')
-        #     return False
+     
 
     def get_task_per_user_details(self):
         queryManager = QueryManager()

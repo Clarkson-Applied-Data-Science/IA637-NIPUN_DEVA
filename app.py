@@ -414,9 +414,7 @@ def comment():
         except Exception as e:
             print(commObj.errors[0])
 
-
-    elif request.method == 'GET':
-        pass
+  
     else:
         return render_template('commentForm.html', user_id=user_id, task_id=task_id)
 
